@@ -2,6 +2,7 @@ import * as express from 'express';
 import { getEnvironmentVariables } from './environments/env';
 import * as mongoose from 'mongoose';
 import userRouter from './routers/userRouter';
+import bodyParser = require('body-parser');
 
 export class Server {
     public app: express.Application = express();
@@ -16,11 +17,17 @@ export class Server {
 
     setConfiguration() {
         this.connectMongoDb(); // single responsibility princple
+        this.configureBodyParser();
+        
 
     }
 
     setRoutes() {
         this.app.use('/api/users', userRouter);
+    }
+
+    configureBodyParser() {
+        this.app.use(bodyParser.urlencoded({ extended: true}));
     }
 
     connectMongoDb() {
